@@ -17,7 +17,30 @@ public class Student {
         this.email = email;
         this.gender = gender;
     }
+
     enum Gender {
-        MALE, FRMALE
+        MALE, FEMALE
     }
+
+
+    public UUID getStudentId() {
+        return studentId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
 }
