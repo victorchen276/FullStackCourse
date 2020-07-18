@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
+import Container from './Container'
 import './App.css';
 
-import { getAllStudents } from './Client'
+import { getAllStudents } from './Client';
 import {
-  Table
-} from 'antd'
+  Table,
+  Avatar,
+  Spin,
+  Icon
+} from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 /*
 function App() {
   getAllStudents().then(res => res.json().then(stuedents => {
@@ -16,25 +21,41 @@ function App() {
   );
 }
 */
+
+
+const getIndicatorIcon = () => <LoadingOutlined style={{ fontSize: 24 }} spin />;
 class App extends Component {
   state = {
-    students: []
+    students: [],
+    isFetching: false
   }
   componentDidMount () {
     this.fetchStudents();
   }
   fetchStudents = () => {
+    this.setState ({
+      isFetching: true
+    });
     getAllStudents()
       .then(res => res.json()
       .then(students => {
         console.log(students);
         this.setState({
-          students
+          students,
+          isFetching: false
         });
     }))
   }
   render() {
-    const { students } = this.state;
+
+    const { students, isFetching } = this.state;
+    if (isFetching) {
+      return(
+        <Container> 
+          <Spin indicator={getIndicatorIcon()}/>
+        </Container>
+      );
+    }
     if (students && students.length) {
       // return students.map((student, id) => {
       //   return (
@@ -48,6 +69,15 @@ class App extends Component {
       //   );
       // })
       const columns = [
+        {
+          title: '',
+          key: 'avatar',
+          render: (text, student) => (
+            <Avatar size='large'>
+              {`${student.firstName.charAt(0).toUpperCase()}${student.lastName.charAt(0).toUpperCase()}`}
+            </Avatar>
+          )
+        },
         {
           title: 'Student Id',
           dataIndex: 'studentId',
@@ -64,7 +94,14 @@ class App extends Component {
           key: 'lastName'
         }
       ];
-      return <Table dataSource={students} columns={columns} rowKey='studentId' />;
+      return (
+        <Container>
+          <Table dataSource = {students} 
+                  columns = {columns}
+                  pagination = {false}
+                  rowKey = 'studentId'/>
+        </Container>
+      );
     }
     return (
       <h1>Nothing Found</h1>
