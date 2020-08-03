@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import Container from './Container'
+import Footer from './Footer'
 import './App.css';
 
 import { getAllStudents } from './Client';
@@ -57,17 +58,6 @@ class App extends Component {
       );
     }
     if (students && students.length) {
-      // return students.map((student, id) => {
-      //   return (
-      //     <div key={id}> 
-      //       <h2>{student.studentId}</h2>
-      //       <p>{student.firstName}</p>
-      //       <p>{student.lastName}</p>
-      //       <p>{student.gender}</p>
-      //       <p>{student.email}</p>
-      //     </div>
-      //   );
-      // })
       const columns = [
         {
           title: '',
@@ -100,6 +90,7 @@ class App extends Component {
                   columns = {columns}
                   pagination = {false}
                   rowKey = 'studentId'/>
+          <Footer numberOfStudents={students.length}></Footer>
         </Container>
       );
     }
